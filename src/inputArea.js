@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export default function BasicTextFields({ setPrompt }) {
+export default function BasicTextFields({ setPrompt, prompt, placeholder }) {
   return (
     <Box
       component="form"
@@ -11,8 +11,10 @@ export default function BasicTextFields({ setPrompt }) {
       autoComplete="off"
       className='w-full'
     >
-      <TextField id="outlined-basic" label="Enter prompt" variant="outlined"
-        onChange={(e) => setPrompt(e.target.value)} />
+      <TextField id="outlined-basic" label={placeholder} variant="outlined"
+        onChange={(e) => setPrompt(e.target.value)} value={prompt} />
     </Box>
   );
 }
+
+// AIzaSyBj451WJaQpBIAbQg-8gY89L-1RdUtATAE
