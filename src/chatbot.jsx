@@ -2,13 +2,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { Card } from './components/card';
 import { Button } from './components/button';
-import { Input } from './components/input';
-import { Moon, Sun, Send, Bot, User, Loader2 } from 'lucide-react';
+import { Moon, Sun, Bot, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import BasicTextFields from './inputArea';
 import aiLogo from './assets/chatbot.png'
-import bot from './assets/artificial-intelligence.svg'
+import logo from './assets/artificial-intelligence.png'
 
 const Chatbot = () => {
   const [theme, setTheme] = useState('light');
@@ -29,7 +28,7 @@ const Chatbot = () => {
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
- 
+
   async function handleSubmit(e) {
     e?.preventDefault();
     if (!prompt.trim() || loading) return;
@@ -81,8 +80,8 @@ const Chatbot = () => {
         )}
         <div className={`flex flex-col max-w-[80%] ${isBot ? 'items-start' : 'items-end'}`}>
           <div className={`rounded-2xl px-4 py-2 ${isBot
-            ? 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'
-            : 'bg-blue-600 text-white'
+              ? `${theme === "dark" ? "bg-gray-700 text-gray-200" : "bg-blue-100 text-gray-800"}`
+              : "bg-blue-500 text-white"
             }`}>
             {isBot ? (
               <ReactMarkdown className="prose dark:prose-invert prose-sm max-w-none">
@@ -94,7 +93,7 @@ const Chatbot = () => {
           </div>
         </div>
         {!isBot && (
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
             <User className="w-5 h-5 text-white" />
           </div>
         )}
@@ -103,31 +102,31 @@ const Chatbot = () => {
   };
 
   return (
-    <div className={`min-h-screen w-full flex flex-col items-center justify-center transition-colors duration-300 ${theme === 'dark' ? 'bg-gradient-to-r from-gray-800 via-gray-900 to-black' : 'bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500'}`}>
+    <div className={`min-h-screen w-full flex flex-col items-center justify-center transition-colors duration-300 ${theme === 'dark' ? 'bg-gradient-to-r from-gray-800 via-gray-900 to-black' : 'bg-gradient-to-r from-slate-300 to-slate-500'}`}>
 
-      <Card className="w-[90%] max-w-lg md:max-w-2xl rounded-lg shadow-2xl bg-white dark:bg-gray-800 transition-colors duration-300 mx-4 md:mx-0">
-        <div className="flex justify-between items-center p-4 border-b">
+      <Card className="w-[90%] max-w-lg md:max-w-2xl rounded-xl shadow-2xl bg-white dark:bg-gray-800 transition-colors duration-300 mx-4 md:mx-0">
+        <div className={`flex justify-between ${theme === "dark" ? "bg-gray-600 border-slate-700" : "bg-neutral-200 border-white"} items-center p-3 `}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img src={bot} alt="" />
+              <img src={logo} alt="" />
             </div>
-            <h2 className="text-xl font-semibold">AI Assistant</h2>
+            <h2 className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-black"}`}>AI Assistant</h2>
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleTheme}
-            className="rounded-full"
+            className="rounded-xl"
           >
             {theme === 'light' ? (
-              <Sun className="w-5 h-5" />
+              <Sun className="w-8 h-8 text-orange-500 mr-3" />
             ) : (
-              <Moon className="w-5 h-5" />
+              <Moon className="w-7 h-7 text-neutral-100 mr-3" />
             )}
           </Button>
         </div>
 
-        <div className="flex-1 h-[calc(80vh-8rem)] overflow-y-auto p-4">
+        <div className={`flex-1 h-[calc(80vh-8rem)] overflow-y-auto p-4 ${theme === "dark" ? "text-white bg-slate-600" : "text-black bg-neutral-50"}`}>
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-8">
               <div className="animate-bounce mb-4 text-6xl">
@@ -136,7 +135,7 @@ const Chatbot = () => {
                 </div>
               </div>
               <h3 className="text-xl font-semibold mb-2">Welcome!</h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className={` ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
                 How can I assist you today?
               </p>
             </div>
@@ -148,27 +147,18 @@ const Chatbot = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 border-t">
+        <form onSubmit={handleSubmit} className={` px-4 border-none ${theme === "dark" ? "text-white bg-slate-600" : "text-black bg-neutral-50"} `}>
           <div className="flex gap-2">
             <BasicTextFields
               setPrompt={setPrompt}
               ref={inputRef}
               prompt={prompt}
               disabled={loading}
-              className="flex-grow mr-2 px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 dark:bg-gray-900 dark:text-white dark:placeholder-gray-500"
-              placeholder="Type your message..."
+              loading={loading}
+              theme={theme}
+              className="flex-grow mr-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 dark:bg-gray-900 dark:text-white dark:placeholder-gray-500"
+              placeholder="Message..."
             />
-            <Button
-              type="submit"
-              disabled={!prompt.trim() || loading}
-              className="rounded-full h-14 px-6 mt-2"
-            >
-              {loading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Send className="w-5 h-5" />
-              )}
-            </Button>
           </div>
         </form>
       </Card>

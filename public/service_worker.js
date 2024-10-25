@@ -4,7 +4,7 @@
 const CACHE_NAME = "app-cache-v1";
 
 // Assets to cache
-const urlsToCache = ["/", "/index.html", "/favicon.ico"];
+const urlsToCache = ["/", "/index.html", "/favicon.ico", "/chatbot.png"];
 
 // Install event: Cache necessary assets
 self.addEventListener("install", (event) => {
