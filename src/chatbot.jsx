@@ -29,7 +29,7 @@ const Chatbot = () => {
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-
+ 
   async function handleSubmit(e) {
     e?.preventDefault();
     if (!prompt.trim() || loading) return;
